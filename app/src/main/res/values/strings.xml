@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Tournament Payouts</string>
+    <string name="number_of_players">Number of players</string>
+    <string name="prize_pool">Prize Pool</string>
+
+    <string name="payout_prompt">Choose player count or places to pay</string>
+    <string name="rounding">rounding</string>
+    <string-array name="player_payouts">
+        <item>Select number of players to pay</item>
+        <item>2  to 11 Players (3 places paid)</item>
+        <item>12 to 17 Players (4 places paid)</item>
+        <item>18 to 26 Players (5 places paid)</item>
+        <item>27 to 40 Players (6 places paid)</item>
+    </string-array>
+</resources>
