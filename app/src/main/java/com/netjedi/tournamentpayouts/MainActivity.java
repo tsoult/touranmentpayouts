@@ -15,6 +15,25 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+// Purpose:
+// This solves a simple problem for a poker game, calculating payouts
+// Rounding payouts to nearest 10 units being paid out on fixed percentages
+// A project to help learn android programming
+//
+// Here are the current percentages of the prize pool to be paid
+// The last value is an approximation due to the rounding of the other places
+// 3 places - {.5, .3, .2}
+// 4 places - {.4, .28, .2, .12}
+// 5 places - {.38, .25, .17, .12, .08}
+// 6 places - {.32, .22, .165, .125, .09, .08}
+
+
+// TODO:
+// The rounding factor is currently hardcoded to 10 units and needs to be added as an option menu
+// Use a database to store the player count and payout values.
+// Need an db editor to allow altering of the values for payout and creation of new payout levels
+
+
 public class MainActivity extends AppCompatActivity {
 
     static EditText etPool;
@@ -32,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
         btnCalculate = findViewById(R.id.calculate);
         lvResults = findViewById(R.id.lvResults);
 
-        final ArrayAdapter<String> adapter;
-
+        // Hide the keyboard
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         // might change this out for a database later
@@ -59,12 +77,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.options, menu);
-//        return true;
-//    }
-
     public void calculatePayout(int pool, double[] amounts, int rounder) {
 
         // This is used to verify the payouts and pool match
@@ -73,11 +85,10 @@ public class MainActivity extends AppCompatActivity {
         // This is used to track the payout amounts
         int[] payouts = new int[amounts.length];
 
-        // This is where the string output will go for the list
-        String[] payStr;
-
+        // This is the adapter for the list view data
         ArrayAdapter<String> adapter;
 
+        // loop through the payout amounts and calculate the payouts
         for(int i = 0; i < amounts.length; i++) {
             double tmp = pool * amounts[i];
             double rem = tmp % rounder;
@@ -99,14 +110,17 @@ public class MainActivity extends AppCompatActivity {
             total += (int) tmp;
         }
 
-        View view = this.getCurrentFocus();
-        if( total != pool)
+        // Sanity check on the payout values
+        if( total != pool) {
             Toast.makeText(getApplicationContext(), "Prize pool and total payouts do not match", Toast.LENGTH_SHORT).show();
+        }
 
-        payStr = prepareOutput(payouts);
-        adapter = new ArrayAdapter<String>(this, R.layout.layout, payStr);
+        // Adding the payout data for display
+        adapter = new ArrayAdapter<String>(this, R.layout.layout, prepareOutput(payouts));
         lvResults.setAdapter(adapter);
 
+        // Hide the keyboards we are done processing
+        View view = this.getCurrentFocus();
         if(view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -115,7 +129,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] prepareOutput(int[] values)
     {
+        // Here is where we format int list of payouts into strings we want to show the user
+        // The case is based on a zero index but the output is based on output from 1
+        // The current design is only showing up to six places
+        // create an array of strings to hold the formatted payout strings
         String[] results = new String[values.length];
+        // loop through the amounts and create a string for each payout
         for(int i =0; i < values.length; i++)
         {
             switch(i){
@@ -140,9 +159,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // Return the payout strings to be displayed
         return(results);
     }
 
+    // Converts the string of players and places to be paid to percentage of payouts
+    // I have an idea on storing this information in a database and allowing the user to edit values
+    // Then display the entries from the database in spinner, find the selected string and return values
     public static double[] getPayoutValues(String selected) {
 
         if(selected.startsWith("2 to 11")) {

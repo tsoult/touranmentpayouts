@@ -34,8 +34,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrizePool"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPrizePool"/>
 
     <TextView
         android:id="@+id/tvPlayersCount"
