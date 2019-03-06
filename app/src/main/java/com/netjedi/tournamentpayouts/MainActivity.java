@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 // could get id value and check for id 0
                 int rnd_val = 10;
                 String selection = spPlayers.getSelectedItem().toString();
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 if(etPool.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(),"Please enter value for the pool greater than 10", Toast.LENGTH_SHORT).show();
                 } else if(selection.startsWith("Select")) {
@@ -118,13 +122,6 @@ public class MainActivity extends AppCompatActivity {
         // Adding the payout data for display
         adapter = new ArrayAdapter<String>(this, R.layout.layout, prepareOutput(payouts));
         lvResults.setAdapter(adapter);
-
-        // Hide the keyboards we are done processing
-        View view = this.getCurrentFocus();
-        if(view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     public String[] prepareOutput(int[] values)
