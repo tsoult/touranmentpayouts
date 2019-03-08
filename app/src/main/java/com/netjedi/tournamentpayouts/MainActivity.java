@@ -32,6 +32,7 @@ import android.widget.Toast;
 // The rounding factor is currently hardcoded to 10 units and needs to be added as an option menu
 // Use a database to store the player count and payout values.
 // Need an db editor to allow altering of the values for payout and creation of new payout levels
+// Allow the tweaking of the payout levels on the fly with verification and adding a bubble pay.
 
 
 public class MainActivity extends AppCompatActivity {
